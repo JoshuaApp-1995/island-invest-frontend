@@ -1,9 +1,9 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, Suspense } from "react"
 import { useSearchParams, useRouter } from "next/navigation"
 import useSWR from "swr"
-import { Search, SlidersHorizontal, X } from "lucide-react"
+import { Search, SlidersHorizontal, X, Map as MapIcon, LayoutGrid } from "lucide-react"
 import { Header } from "@/components/layout/header"
 import { Footer } from "@/components/layout/footer"
 import { ListingCard } from "@/components/listing-card"
@@ -25,8 +25,7 @@ import {
 } from "@/components/ui/sheet"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Badge } from "@/components/ui/badge"
-import { Map as MapIcon, LayoutGrid } from "lucide-react"
-import type { ListingCategory, ListingWithImages } from "@/lib/types"
+import type { ListingCategory } from "@/lib/types"
 import { CATEGORY_LABELS, CARIBBEAN_LOCATIONS } from "@/lib/types"
 import dynamic from "next/dynamic"
 
@@ -38,10 +37,9 @@ const ListingsMap = dynamic(() => import("@/components/listings-map"), {
 import { getListings } from "@/api/listings"
 
 const categories = Object.keys(CATEGORY_LABELS) as ListingCategory[];
-
 const fetcher = (params: any) => getListings(params)
 
-export default function ListingsPage() {
+function ListingsContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   
@@ -156,7 +154,6 @@ export default function ListingsPage() {
       <Header />
       <main className="flex-1">
         <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-          {/* Search and Filters Header */}
           <div className="mb-8 flex items-center justify-between">
             <div>
               <h1 className="text-3xl font-bold text-foreground">Browse Listings</h1>
@@ -187,7 +184,6 @@ export default function ListingsPage() {
           </div>
 
           <div className="flex flex-col gap-4 lg:flex-row">
-            {/* Desktop Sidebar Filters */}
             <aside className="hidden w-64 shrink-0 lg:block">
               <div className="sticky top-24 rounded-lg border border-border bg-card p-4">
                 <h3 className="mb-4 font-semibold">Filters</h3>
@@ -195,9 +191,7 @@ export default function ListingsPage() {
               </div>
             </aside>
 
-            {/* Main Content */}
             <div className="flex-1">
-              {/* Search Bar and Mobile Filter Toggle */}
               <div className="mb-6 flex gap-3">
                 <div className="relative flex-1">
                   <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
@@ -232,7 +226,6 @@ export default function ListingsPage() {
                 </Sheet>
               </div>
 
-              {/* Active Filters */}
               {activeFiltersCount > 0 && (
                 <div className="mb-4 flex flex-wrap gap-2">
                   {category && (
@@ -262,7 +255,6 @@ export default function ListingsPage() {
                 </div>
               )}
 
-              {/* Results */}
               {isLoading ? (
                 <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
                   {[...Array(6)].map((_, i) => (
@@ -308,5 +300,21 @@ export default function ListingsPage() {
       </main>
       <Footer />
     </div>
+  )
+}
+
+export default function ListingsPage() {
+  return (
+    <Suspense fallback={
+      <div className="flex min-h-screen flex-col">
+        <Header />
+        <main className="flex-1 flex items-center justify-center">
+          <Skeleton className="h-12 w-12 rounded-full" />
+        </main>
+        <Footer />
+      </div>
+    }>
+      <ListingsContent />
+    </Suspense>
   )
 }
