@@ -1,6 +1,6 @@
 "use client"
 
-import { use, useState, useEffect } from "react"
+import { useState, useEffect } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import useSWR from "swr"
@@ -32,8 +32,8 @@ const fetchListingBySlug = async (slug: string) => {
   return response.data.listing
 }
 
-export default function ListingDetailPage({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = use(params)
+export default function ListingDetailPage({ params }: { params: { slug: string } }) {
+  const { slug } = params
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   
   const { data: listing, isLoading } = useSWR(
