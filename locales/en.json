@@ -1,0 +1,36 @@
+{
+  "common": {
+    "search": "Search",
+    "filter": "Filter",
+    "location": "Location",
+    "price": "Price",
+    "category": "Category",
+    "viewDetails": "View Details",
+    "contact": "Contact",
+    "home": "Home",
+    "listings": "Listings",
+    "blog": "Blog",
+    "about": "About",
+    "map": "Map",
+    "login": "Login",
+    "register": "Register",
+    "dashboard": "Dashboard",
+    "logout": "Logout"
+  },
+  "hero": {
+    "title": "Invest in the Caribbean's Most Exclusive Real Estate",
+    "subtitle": "Discover luxury villas, premium land, and business opportunities in the heart of the Dominican Republic.",
+    "cta": "Explore Properties"
+  },
+  "listings": {
+    "title": "Our Properties",
+    "subtitle": "Carefully curated investment opportunities for every budget.",
+    "noResults": "No properties found matching your criteria."
+  },
+  "cta": {
+    "title": "Ready to List Your Property?",
+    "subtitle": "Join thousands of investors and sellers on the Caribbean's premier property marketplace.",
+    "button": "Publish a Listing",
+    "browse": "Browse Listings"
+  }
+}

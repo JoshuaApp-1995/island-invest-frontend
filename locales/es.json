@@ -1,0 +1,36 @@
+{
+  "common": {
+    "search": "Buscar",
+    "filter": "Filtrar",
+    "location": "Ubicación",
+    "price": "Precio",
+    "category": "Categoría",
+    "viewDetails": "Ver Detalles",
+    "contact": "Contacto",
+    "home": "Inicio",
+    "listings": "Propiedades",
+    "blog": "Blog",
+    "about": "Nosotros",
+    "map": "Mapa",
+    "login": "Ingresar",
+    "register": "Registrarse",
+    "dashboard": "Panel",
+    "logout": "Cerrar Sesión"
+  },
+  "hero": {
+    "title": "Invierte en los Bienes Raíces más Exclusivos del Caribe",
+    "subtitle": "Descubre villas de lujo, terrenos premium y oportunidades de negocio en el corazón de la República Dominicana.",
+    "cta": "Explorar Propiedades"
+  },
+  "listings": {
+    "title": "Nuestras Propiedades",
+    "subtitle": "Oportunidades de inversión cuidadosamente seleccionadas para cada presupuesto.",
+    "noResults": "No se encontraron propiedades que coincidan con sus criterios."
+  },
+  "cta": {
+    "title": "¿Listo para listar tu propiedad?",
+    "subtitle": "Únete a miles de inversores y vendedores en el principal mercado de propiedades del Caribe.",
+    "button": "Publicar una Propiedad",
+    "browse": "Ver Propiedades"
+  }
+}
