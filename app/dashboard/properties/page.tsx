@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, Suspense } from "react"
 import { PageHeader } from "@/components/dashboard/page-header"
 import { Home, Plus, Search, Filter, Sparkles, MoreVertical, Edit, Trash2, ExternalLink, Loader2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -15,7 +15,7 @@ import { toast } from "@/hooks/use-toast"
 import { useSearchParams } from "next/navigation"
 import apiClient from "@/api/client"
 
-export default function PropertiesPage() {
+function PropertiesContent() {
   const searchParams = useSearchParams()
   const { data: listingsData, isLoading, mutate } = useSWR('/listings/me', fetcher)
   const listings = listingsData?.listings || []
@@ -166,3 +166,16 @@ export default function PropertiesPage() {
   )
 }
 
+export default function PropertiesPage() {
+  return (
+    <Suspense fallback={
+      <div className="space-y-6">
+        <div className="flex items-center justify-center py-20">
+          <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        </div>
+      </div>
+    }>
+      <PropertiesContent />
+    </Suspense>
+  )
+}
