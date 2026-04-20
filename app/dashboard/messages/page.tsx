@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, Suspense } from "react"
 import { useSearchParams } from "next/navigation"
 import { SEO } from "@/components/seo"
 import { Header } from "@/components/layout/header"
@@ -32,7 +32,7 @@ interface Message {
   sender: { id: string, name: string, avatarUrl: string | null }
 }
 
-export default function MessagesDashboardPage() {
+function MessagesContent() {
   const { user } = useAuth()
   const searchParams = useSearchParams()
   const { data: conversationsData, mutate: mutateConversations } = useSWR('/messages/conversations', fetcher, { refreshInterval: 5000 })
@@ -52,7 +52,6 @@ export default function MessagesDashboardPage() {
   const activeChatMessages: Message[] = activeConversationData?.messages || []
   const activeConversationDetails: Conversation | null = activeConversationData?.conversation || null
 
-  // Auto-start conversation from listing "Message Owner" redirect
   useEffect(() => {
     const receiverId = searchParams.get('receiverId')
     const propertyId = searchParams.get('propertyId')
@@ -63,15 +62,12 @@ export default function MessagesDashboardPage() {
       .then((res) => {
         setActiveConversationId(res.data.conversationId)
         mutateConversations()
-        // Clean URL without re-render
         window.history.replaceState({}, '', '/dashboard/messages')
       })
       .catch((err) => console.error('Failed to start conversation', err))
       .finally(() => setIsStarting(false))
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user])
+  }, [user, searchParams, mutateConversations])
 
-  // Auto-select first conversation if none selected and no redirect pending
   useEffect(() => {
     if (!activeConversationId && !searchParams.get('receiverId') && conversations.length > 0) {
       setActiveConversationId(conversations[0].id)
@@ -115,13 +111,10 @@ export default function MessagesDashboardPage() {
           </div>
         ) : (
         <Card className="h-full border-none shadow-xl flex flex-col md:flex-row overflow-hidden bg-background rounded-3xl">
-          
-          {/* Left Sidebar: Conversations List */}
           <div className={`w-full md:w-80 lg:w-96 border-r flex flex-col ${activeConversationId ? 'hidden md:flex' : 'flex'}`}>
             <div className="p-4 border-b bg-muted/5">
               <h2 className="text-xl font-black">Messages</h2>
             </div>
-            
             <div className="flex-1 overflow-y-auto custom-scrollbar">
               {conversations.length === 0 ? (
                 <div className="p-8 text-center text-muted-foreground">
@@ -133,7 +126,6 @@ export default function MessagesDashboardPage() {
                   const otherUser = getOtherUser(conv)
                   const lastMessage = conv.messages[0]
                   const isActive = activeConversationId === conv.id
-                  
                   return (
                     <div 
                       key={conv.id}
@@ -167,11 +159,9 @@ export default function MessagesDashboardPage() {
             </div>
           </div>
 
-          {/* Right Panel: Chat Thread */}
           <div className={`flex-1 flex flex-col ${!activeConversationId ? 'hidden md:flex' : 'flex'}`}>
             {activeConversationId ? (
               <>
-                {/* Chat Header */}
                 <div className="p-4 border-b flex items-center gap-3 bg-background shadow-sm z-10">
                   <Button variant="ghost" size="icon" className="md:hidden mr-1" onClick={() => setActiveConversationId(null)}>
                     ←
@@ -194,7 +184,6 @@ export default function MessagesDashboardPage() {
                   )}
                 </div>
 
-                {/* Messages Area */}
                 <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-muted/5 custom-scrollbar">
                   {activeChatMessages.map(msg => {
                     const isMe = msg.senderId === user?.id
@@ -209,14 +198,8 @@ export default function MessagesDashboardPage() {
                       </div>
                     )
                   })}
-                  {activeChatMessages.length === 0 && (
-                    <div className="h-full flex items-center justify-center text-muted-foreground">
-                      <p>Send a message to start the conversation.</p>
-                    </div>
-                  )}
                 </div>
 
-                {/* Message Input Form */}
                 <div className="p-4 bg-background border-t">
                   <form onSubmit={handleSendMessage} className="flex items-end gap-2">
                     <Input 
@@ -238,10 +221,24 @@ export default function MessagesDashboardPage() {
               </div>
             )}
           </div>
-
         </Card>
         )}
       </main>
     </div>
+  )
+}
+
+export default function MessagesDashboardPage() {
+  return (
+    <Suspense fallback={
+      <div className="flex flex-col h-screen bg-muted/10">
+        <Header />
+        <main className="flex-1 flex items-center justify-center">
+          <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        </main>
+      </div>
+    }>
+      <MessagesContent />
+    </Suspense>
   )
 }
