@@ -83,7 +83,6 @@ export default function RegisterPage() {
             ))}
           </div>
         </div>
-      </div>
 
       {/* Right: Register form */}
       <div className="w-full lg:w-1/2 flex flex-col items-center justify-center p-8 bg-background">
