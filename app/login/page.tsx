@@ -37,6 +37,43 @@ export default function LoginPage() {
     }
   }
 
+  const handleFacebookSuccess = async (accessToken: string) => {
+    try {
+      setError("")
+      // We'll need to add facebookLogin to useAuth
+      // @ts-ignore
+      await facebookLogin(accessToken)
+    } catch (err: any) {
+      setError(err.response?.data?.error || "Facebook login failed.")
+    }
+  }
+
+  useState(() => {
+    // Load FB SDK
+    if (typeof window !== 'undefined' && !window.FB) {
+      // @ts-ignore
+      window.fbAsyncInit = function() {
+        // @ts-ignore
+        window.FB.init({
+          appId: process.env.NEXT_PUBLIC_FACEBOOK_APP_ID,
+          cookie: true,
+          xfbml: true,
+          version: 'v18.0'
+        });
+      };
+
+      (function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        // @ts-ignore
+        js.src = "https://connect.facebook.net/en_US/sdk.js";
+        // @ts-ignore
+        fjs.parentNode.insertBefore(js, fjs);
+      }(document, 'script', 'facebook-jssdk'));
+    }
+  })
+
   return (
     <div className="min-h-screen flex">
       {/* Left decorative panel */}
@@ -97,7 +134,7 @@ export default function LoginPage() {
 
           {/* Google Login */}
           {process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID && (
-            <div className="w-full mb-6">
+            <div className="w-full mb-3">
               <GoogleLogin
                 onSuccess={handleGoogleSuccess}
                 onError={() => setError("Google login failed.")}
@@ -109,6 +146,29 @@ export default function LoginPage() {
                 text="signin_with"
               />
             </div>
+          )}
+
+          {/* Facebook Login */}
+          {process.env.NEXT_PUBLIC_FACEBOOK_APP_ID && (
+            <Button
+              variant="outline"
+              className="w-full h-12 rounded-xl mb-6 flex items-center justify-center gap-3 border-[#1877F2]/20 hover:bg-[#1877F2]/5 hover:text-[#1877F2] transition-all"
+              onClick={() => {
+                // @ts-ignore
+                window.FB.login((response: any) => {
+                  if (response.authResponse) {
+                    handleFacebookSuccess(response.authResponse.accessToken);
+                  } else {
+                    setError("Facebook login cancelled.");
+                  }
+                }, { scope: 'public_profile,email' });
+              }}
+            >
+              <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+              </svg>
+              Sign in with Facebook
+            </Button>
           )}
 
           {/* Divider */}

@@ -19,6 +19,7 @@ interface AuthContextType {
   login: (email: string, password: string) => Promise<void>;
   register: (name: string, email: string, password: string) => Promise<void>;
   googleLogin: (credential: string) => Promise<void>;
+  facebookLogin: (accessToken: string) => Promise<void>;
   logout: () => void;
 }
 
@@ -75,6 +76,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     router.push('/dashboard');
   };
 
+  const facebookLogin = async (accessToken: string) => {
+    const response = await apiClient.post('/auth/facebook', { accessToken });
+    const { user, token } = response.data;
+    localStorage.setItem('token', token);
+    apiClient.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    setUser(user);
+    router.push('/dashboard');
+  };
+
   const logout = () => {
     localStorage.removeItem('token');
     delete apiClient.defaults.headers.common['Authorization'];
@@ -83,7 +93,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, register, googleLogin, logout }}>
+    <AuthContext.Provider value={{ user, loading, login, register, googleLogin, facebookLogin, logout }}>
       {children}
     </AuthContext.Provider>
   );
