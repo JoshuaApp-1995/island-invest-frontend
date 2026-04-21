@@ -1,13 +1,12 @@
 import type { Metadata, Viewport } from 'next'
-import { Geist, Geist_Mono } from 'next/font/google'
+import { Inter } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import { AuthProvider } from '../hooks/useAuth'
 import { CookieConsent } from '@/components/cookie-consent'
 import { GoogleOAuthProvider } from '@react-oauth/google'
 import './globals.css'
 
-const _geist = Geist({ subsets: ["latin"] });
-const _geistMono = Geist_Mono({ subsets: ["latin"] });
+const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
 export const metadata: Metadata = {
   title: 'IslandInvest - Caribbean Property & Business Listings',
@@ -44,7 +43,7 @@ export default function RootLayout({
 
   return (
     <html lang="en" className="bg-background">
-      <body className="font-sans antialiased min-h-screen">
+      <body className={`${inter.variable} font-sans antialiased min-h-screen`}>
         {GA_ID && <GoogleAnalytics GA_MEASUREMENT_ID={GA_ID} />}
         <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || ''}>
           <LanguageProvider>
@@ -59,4 +58,3 @@ export default function RootLayout({
     </html>
   )
 }
-
