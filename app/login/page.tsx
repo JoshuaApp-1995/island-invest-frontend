@@ -10,7 +10,7 @@ import { useAuth } from "@/hooks/useAuth"
 import { GoogleLogin } from "@react-oauth/google"
 
 export default function LoginPage() {
-  const { login, googleLogin } = useAuth()
+  const { login, googleLogin, facebookLogin } = useAuth()
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [error, setError] = useState("")
@@ -40,7 +40,6 @@ export default function LoginPage() {
   const handleFacebookSuccess = async (accessToken: string) => {
     try {
       setError("")
-      // We'll need to add facebookLogin to useAuth
       // @ts-ignore
       await facebookLogin(accessToken)
     } catch (err: any) {
@@ -114,7 +113,6 @@ export default function LoginPage() {
               </div>
             ))}
           </div>
-        </div>
       </div>
 
       {/* Right: Login form */}
