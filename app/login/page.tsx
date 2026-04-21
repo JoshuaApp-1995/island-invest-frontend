@@ -93,15 +93,16 @@ export default function LoginPage() {
             />
           ))}
         </div>
-        <div className="relative z-10 text-center max-w-md">
+        <Link href="/" className="relative z-10 text-center max-w-md hover:opacity-80 transition-opacity">
           <div className="w-20 h-20 rounded-3xl bg-white/20 backdrop-blur-sm flex items-center justify-center mx-auto mb-8 shadow-2xl">
             <span className="text-4xl font-black italic text-white">I</span>
           </div>
-          <h1 className="text-4xl font-extrabold tracking-tight mb-4">IslandInvest</h1>
+          <h1 className="text-4xl font-extrabold tracking-tight mb-4 text-white">IslandInvest</h1>
           <p className="text-white/80 text-lg leading-relaxed">
             The premier marketplace for Caribbean real estate & investment opportunities.
           </p>
-          <div className="mt-12 grid grid-cols-3 gap-6 text-center">
+        </Link>
+        <div className="mt-12 grid grid-cols-3 gap-6 text-center">
             {[
               { label: "Properties", value: "2,400+" },
               { label: "Investors", value: "8,500+" },

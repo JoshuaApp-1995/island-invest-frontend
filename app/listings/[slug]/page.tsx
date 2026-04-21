@@ -60,8 +60,7 @@ export default function ListingDetailPage({ params }: { params: { slug: string }
 
   if (isLoading) {
     return (
-      <div className="flex min-h-screen flex-col">
-        <Header />
+      <div className="flex flex-col">
         <main className="flex-1">
           <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
             <Skeleton className="mb-6 h-8 w-32" />
@@ -78,15 +77,13 @@ export default function ListingDetailPage({ params }: { params: { slug: string }
             </div>
           </div>
         </main>
-        <Footer />
       </div>
     )
   }
 
   if (!listing) {
     return (
-      <div className="flex min-h-screen flex-col">
-        <Header />
+      <div className="flex flex-col">
         <main className="flex flex-1 items-center justify-center">
           <div className="text-center">
             <h1 className="text-2xl font-bold">Listing not found</h1>
@@ -98,7 +95,6 @@ export default function ListingDetailPage({ params }: { params: { slug: string }
             </Button>
           </div>
         </main>
-        <Footer />
       </div>
     )
   }
@@ -149,7 +145,6 @@ export default function ListingDetailPage({ params }: { params: { slug: string }
         image={listing.images?.[0]?.url}
         jsonLd={jsonLd}
       />
-      <Header />
       <main className="flex-1">
         <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
           {/* Back Button */}
@@ -523,7 +518,6 @@ export default function ListingDetailPage({ params }: { params: { slug: string }
           </div>
         </div>
       </main>
-      <Footer />
     </div>
   )
 }

@@ -61,15 +61,16 @@ export default function RegisterPage() {
             />
           ))}
         </div>
-        <div className="relative z-10 text-center max-w-md">
+        <Link href="/" className="relative z-10 text-center max-w-md hover:opacity-80 transition-opacity">
           <div className="w-20 h-20 rounded-3xl bg-white/20 backdrop-blur-sm flex items-center justify-center mx-auto mb-8 shadow-2xl">
             <span className="text-4xl font-black italic text-white">I</span>
           </div>
-          <h1 className="text-4xl font-extrabold tracking-tight mb-4">Join IslandInvest</h1>
+          <h1 className="text-4xl font-extrabold tracking-tight mb-4 text-white">Join IslandInvest</h1>
           <p className="text-white/80 text-lg leading-relaxed">
             Create your free account and start publishing or discovering premium Caribbean properties today.
           </p>
-          <div className="mt-12 space-y-4">
+        </Link>
+        <div className="mt-12 space-y-4">
             {[
               "List your property in minutes",
               "Reach thousands of investors",

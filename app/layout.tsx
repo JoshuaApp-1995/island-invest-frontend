@@ -34,6 +34,9 @@ import { GoogleAnalytics } from '@/components/analytics'
 
 import { LanguageProvider } from '@/context/LanguageContext'
 
+import { Header } from '@/components/layout/header'
+import { Footer } from '@/components/layout/footer'
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -43,12 +46,16 @@ export default function RootLayout({
 
   return (
     <html lang="en" className="bg-background">
-      <body className={`${inter.variable} font-sans antialiased min-h-screen`}>
+      <body className={`${inter.variable} font-sans antialiased min-h-screen flex flex-col`}>
         {GA_ID && <GoogleAnalytics GA_MEASUREMENT_ID={GA_ID} />}
         <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || ''}>
           <LanguageProvider>
             <AuthProvider>
-              {children}
+              <Header />
+              <main className="flex-1">
+                {children}
+              </main>
+              <Footer />
               <CookieConsent />
               <Analytics />
             </AuthProvider>

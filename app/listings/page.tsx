@@ -150,8 +150,7 @@ function ListingsContent() {
   )
 
   return (
-    <div className="flex min-h-screen flex-col">
-      <Header />
+    <div className="flex flex-col">
       <main className="flex-1">
         <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
           <div className="mb-8 flex items-center justify-between">
@@ -306,12 +305,10 @@ function ListingsContent() {
 export default function ListingsPage() {
   return (
     <Suspense fallback={
-      <div className="flex min-h-screen flex-col">
-        <Header />
+      <div className="flex flex-col">
         <main className="flex-1 flex items-center justify-center">
           <Skeleton className="h-12 w-12 rounded-full" />
         </main>
-        <Footer />
       </div>
     }>
       <ListingsContent />
